@@ -30,7 +30,6 @@ export default class UserRepository {
       return await this.repository.save(newUser)
     }
 
-    // updateClient? - feito
     async updateUser(user:UpdateUserDTO):Promise<UserEntity | null> {
       const updateUser = await this.getOneUser(user.id)
       if(!updateUser) {
@@ -44,7 +43,7 @@ export default class UserRepository {
       return await this.repository.save(updateUser)
     }
 
-    // client?
+
     async deleteUser(id:string):Promise<DeleteResult>{
       return await this.repository.delete(id)
     }
