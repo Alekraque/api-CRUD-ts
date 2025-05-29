@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString, Length } from "class-validator"
+import { Match } from "@/utils/matchValidator";
+import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString, Length, Validate } from "class-validator"
 
 export class createClientDTO {
 
@@ -19,6 +20,12 @@ export class createClientDTO {
     message: "Invalid phone number in Brazil, please enter a number like: `+55 11 91234-5678`" // ingles
   })
   phone: string
+
+  @IsNotEmpty()
+  @Validate(Match, ['password'], {
+    message: 'Password confirmation does not match password',
+  })
+  confirmPassword: string;
 }
 
 
