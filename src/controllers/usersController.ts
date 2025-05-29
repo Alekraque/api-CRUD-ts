@@ -3,11 +3,13 @@ import { CreateUserDTO } from '@/dto/create.userDto'
 import { UpdateUserDTO } from '@/dto/update.userDto'
 import UserRepository from '@/repositories/userRepository'
 import { validate } from 'class-validator'
+import { sign } from 'jsonwebtoken'
+import { authConfig } from '@/configs/auth'
 import { Request, Response } from 'express'
 import { DeleteResult } from 'typeorm'
 
 
-class UsersController {
+class usersController {
 
     private userRepository: UserRepository
 
@@ -50,20 +52,27 @@ class UsersController {
 
     create = async(req:Request, res:Response):Promise<Response> => {
 
-      const {name, cpf, email, password } = req.body
+      const {name, cpf, email, password, confirmPassword } = req.body
+
+      if(password !== confirmPassword) {
+        return res.status(400).json({
+          errorMessage: "the password does not match the confirmed password"
+        })
+      }
 
       const newUser = new CreateUserDTO()
       newUser.name = name
       newUser.email = email
       newUser.cpf = cpf
       newUser.password = password
+      newUser.confirmPassword = confirmPassword;
 
       const errors = await validate(newUser)
       if (errors.length > 0) {
-      return res.status(422).send({
-        error: errors
-      })
-    }
+        return res.status(422).send({
+          error: errors
+        })
+      }
       try {
         const UserDataBase = await this.userRepository.createUser(newUser)
         return res.status(200).json({
@@ -74,7 +83,6 @@ class UsersController {
           error: "Internal server error"
         })
       }
-
     }
 
     update = async(req:Request, res:Response):Promise<Response> => {
@@ -144,4 +152,4 @@ class UsersController {
     }
 }
 
-export default new UsersController()
+export default new usersController()
