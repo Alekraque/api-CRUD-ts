@@ -22,8 +22,6 @@ export class CreateUserDTO {
   @Length(1, 255)
   @IsString()
   password: string
-  confirmPassword: any
-
 }
 
 
