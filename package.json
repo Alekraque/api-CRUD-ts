@@ -24,6 +24,8 @@
     "@": "src"
   },
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt-ts": "^7.0.0",
     "body-parser": "^2.2.0",
     "class-validator": "^0.14.2",
     "cors": "^2.8.5",
