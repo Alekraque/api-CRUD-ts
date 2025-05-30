@@ -21,11 +21,6 @@ export class createClientDTO {
   })
   phone: string
 
-  @IsNotEmpty()
-  @Validate(Match, ['password'], {
-    message: 'Password confirmation does not match password',
-  })
-  confirmPassword: string;
 }
 
 
