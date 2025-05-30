@@ -1,15 +1,31 @@
-import AppDataSource from "@/database/connection";
-import { LoginEntity } from "@/entities/loginEntity";
-import { Repository } from "typeorm";
+import { compare } from "bcrypt-ts";
+import UserRepository from "./userRepository";
+import { AuthError } from "@/utils/authError";
+import { Response } from "express";
+import { UserEntity } from "@/entities/userEntity";
 
 export default class LoginRepository {
-  private repository: Repository<LoginEntity>
+  private userRepository: UserRepository
 
   constructor() {
-    this.repository = AppDataSource.getRepository(LoginEntity)
+    this.userRepository = new UserRepository()
   }
 
-  async getOneUser(email: string): Promise<LoginEntity | null> {
-    return await this.repository.findOneBy({ email })
+
+  async checkUser(email:string, password:string):Promise<UserEntity> {
+    const userDB = await this.userRepository.getOneUserByEmail(email)
+
+    if (!userDB) {
+      throw new AuthError("invalid credentials")
+    }
+
+    const match = await compare(password, userDB.password)
+
+    if (!match) {
+      throw new AuthError("invalid credentials");
+    }
+
+    return userDB
+
   }
 }
