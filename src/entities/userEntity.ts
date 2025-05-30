@@ -1,7 +1,9 @@
 import { Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn } from "typeorm";
+import { ClientEntity } from "./clientEntity";
 
 
 @Entity('users')
@@ -23,6 +25,9 @@ export class UserEntity {
       length: 255
     })
     email: string
+
+    @OneToMany(type => ClientEntity, users => UserEntity)
+    clients: ClientEntity[]
 
     @Column({
       name: 'cpf',

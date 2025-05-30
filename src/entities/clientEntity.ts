@@ -1,7 +1,10 @@
 import { Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn } from "typeorm";
+import { UserEntity } from "./userEntity";
 
 @Entity('clients')
 export class ClientEntity {
@@ -22,6 +25,10 @@ export class ClientEntity {
       length: 255
     })
     email: string
+
+
+    @ManyToOne(type => UserEntity, clients => ClientEntity)
+    users: UserEntity
 
     @Column({
       name: 'phone',
