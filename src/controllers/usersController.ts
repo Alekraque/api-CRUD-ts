@@ -3,8 +3,6 @@ import { CreateUserDTO } from '@/dto/create.userDto'
 import { UpdateUserDTO } from '@/dto/update.userDto'
 import UserRepository from '@/repositories/userRepository'
 import { validate } from 'class-validator'
-import { sign } from 'jsonwebtoken'
-import { authConfig } from '@/configs/auth'
 import { Request, Response } from 'express'
 import { DeleteResult } from 'typeorm'
 
@@ -39,7 +37,7 @@ class usersController {
         error: "Client ID is required"
         });
       }
-      const user = await this.userRepository.getOneUser(id)
+      const user = await this.userRepository.getOneUserById(id)
       if(!user) {
         return res.status(404).json({
           errorMessage: "User not found"
@@ -65,7 +63,6 @@ class usersController {
       newUser.email = email
       newUser.cpf = cpf
       newUser.password = password
-      newUser.confirmPassword = confirmPassword;
 
       const errors = await validate(newUser)
       if (errors.length > 0) {
@@ -73,6 +70,7 @@ class usersController {
           error: errors
         })
       }
+
       try {
         const UserDataBase = await this.userRepository.createUser(newUser)
         return res.status(200).json({
@@ -87,7 +85,14 @@ class usersController {
 
     update = async(req:Request, res:Response):Promise<Response> => {
       const { id } = req.params
-      const {name, cpf, email, password } = req.body
+      const {name, cpf, email, password, confirmPassword, newPassword} = req.body
+
+
+      if(newPassword !== confirmPassword) {
+        return res.status(400).json({
+          errorMessage: "the password does not match the confirmed password"
+        })
+      }
 
       const updateUserDTO = new UpdateUserDTO()
 
@@ -95,6 +100,7 @@ class usersController {
       updateUserDTO.email = email
       updateUserDTO.cpf = cpf
       updateUserDTO.password = password
+      updateUserDTO.newPassword = newPassword
       updateUserDTO.id = id
 
 
@@ -107,9 +113,12 @@ class usersController {
       }
 
       try {
-        const UserDataBase = await this.userRepository.updateUser(updateUserDTO)
+        const userDataBase = await this.userRepository.updateUser(updateUserDTO)
+
+        if(!userDataBase) return res.status(404).json({ errorMessage: "Was not possible to update user" })
+
         return res.status(200).json({
-          data: UserDataBase
+          data: userDataBase
         })
       } catch (error) {
         return res.status(500).json({
@@ -126,7 +135,7 @@ class usersController {
       if (!id || id.trim() === "") {
         return res.status(400).json({
           error: "Client ID is required"
-        });
+        })
       }
 
       try {
