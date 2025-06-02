@@ -11,12 +11,13 @@ const AppDataSource = new DataSource({
     username: process.env.USERNAME_DB,
     password: process.env.PASSWORD_DB,
     database: process.env.NAME_DB,
-    synchronize: true,
+    synchronize: false,
     logging: false,
     entities: [
       __dirname + '/../entities/*entity.{ts,js}'
       // arrumar caminho correto - feito
     ],
+    migrations: [__dirname + '/../database/migrations/*.{ts,js}']
 })
 
 AppDataSource.initialize()
