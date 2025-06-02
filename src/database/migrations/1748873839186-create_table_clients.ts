@@ -1,10 +1,11 @@
-import { MigrationInterface, QueryRunner, Table, TableColumn, TableForeignKey } from "typeorm";
+import { query } from "express";
+import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateTableUsers1748636489664 implements MigrationInterface {
+export class CreateTableClients1748873839186 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
       await queryRunner.createTable(new Table({
-        name: "user",
+        name: "clients",
         columns: [
           {
             name: 'id',
@@ -14,6 +15,7 @@ export class CreateTableUsers1748636489664 implements MigrationInterface {
             generationStrategy: 'uuid',
             default: 'uuid_generate_v4()'
           },
+
           {
             name: "email",
             type: 'varchar',
@@ -23,26 +25,18 @@ export class CreateTableUsers1748636489664 implements MigrationInterface {
           },
 
           {
-            name: 'cpf',
-            type: 'varchar',
-            length: '20',
-            isUnique: true,
-            isNullable: false,
+            name:"phone",
+            type: "varchar",
+            length: "20",
+            isNullable: false
           },
 
           {
-            name: 'password',
-            type: 'varchar',
-            length: '255',
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'now()',
             isNullable: false,
           },
-
-          {
-          name: 'created_at',
-          type: 'timestamp',
-          default: 'now()',
-          isNullable: false,
-        },
 
           {
             name: 'updated_at',
@@ -51,11 +45,11 @@ export class CreateTableUsers1748636489664 implements MigrationInterface {
             isNullable: false,
           },
         ]
-      }))
-    }
+    }))
+  }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.dropTable('user')
+      await queryRunner.dropTable('clients')
     }
 
 }
