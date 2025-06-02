@@ -1,5 +1,5 @@
 import { query } from "express";
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import { ForeignKey, MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class CreateTableClients1748873839186 implements MigrationInterface {
 
@@ -32,6 +32,12 @@ export class CreateTableClients1748873839186 implements MigrationInterface {
           },
 
           {
+            name:"user_id",
+            type:'uuid',
+            isNullable: false,
+          },
+
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',
@@ -44,6 +50,15 @@ export class CreateTableClients1748873839186 implements MigrationInterface {
             default: 'now()',
             isNullable: false,
           },
+        ],
+        foreignKeys: [
+          {
+            columnNames: ['user_id'],
+            referencedTableName: 'user',
+            referencedColumnNames: ['id'],
+            onDelete: 'CASCADE'
+
+          }
         ]
     }))
   }
