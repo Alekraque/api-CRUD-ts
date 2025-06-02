@@ -27,7 +27,7 @@ export class UserEntity {
     email: string
 
     @OneToMany(type => ClientEntity, users => UserEntity)
-    clients: ClientEntity[]
+    clientsID: ClientEntity[]
 
     @Column({
       name: 'cpf',

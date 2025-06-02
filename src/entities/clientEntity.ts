@@ -28,7 +28,7 @@ export class ClientEntity {
 
 
     @ManyToOne(type => UserEntity, clients => ClientEntity)
-    users: UserEntity
+    usersID: UserEntity
 
     @Column({
       name: 'phone',
