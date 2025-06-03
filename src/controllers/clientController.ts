@@ -25,6 +25,20 @@ class clientController {
       })
     }
 
+    getAllByUserId = async(req:Request, res:Response):Promise<Response> => {
+      const { user_id } = req.body
+
+      const clientsByUser = await this.repository.getAllClientsByUserId(user_id)
+      if (!clientsByUser || clientsByUser.length === 0) {
+        return res.status(404).json({
+          error: "you don't have Client's in your sistem"
+        })
+      }
+      return res.status(200).json({
+        data: clientsByUser
+      })
+    }
+
     showOneCLient = async(req:Request, res:Response):Promise<Response> => {
     const { id } = req.params
 
@@ -47,7 +61,7 @@ class clientController {
     }
 
     createCLient = async(req:Request, res:Response):Promise<Response> => {
-      const { name, email, phone } = req.body
+      const { name, email, phone, user_id } = req.body
 
 
       const newClient = new createClientDTO()
@@ -55,6 +69,7 @@ class clientController {
       newClient.name = name
       newClient.email = email
       newClient.phone = phone
+      newClient.user_id = user_id
 
       const clientErrors = await validate(newClient)
 
