@@ -21,6 +21,10 @@ export class createClientDTO {
   })
   phone: string
 
+
+  @IsNotEmpty()
+  user_id: string
+
 }
 
 
