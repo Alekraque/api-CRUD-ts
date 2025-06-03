@@ -7,11 +7,12 @@ export class AlterUserTable1748979158550 implements MigrationInterface {
         name: "role",
         type: "varchar",
         length: "255",
-        default: "user"
+        default: "'user'"
       }))
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+      await queryRunner.dropColumn("users", "role")
     }
 
 }
