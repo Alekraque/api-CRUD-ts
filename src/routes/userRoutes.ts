@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import UsersController from "@/controllers/UsersController";
+import { authenticateJWT } from "@/middlewares/authenticatorMiddleware";
 
 
 const userRoutes = Router()
