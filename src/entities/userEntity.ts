@@ -41,6 +41,13 @@ export class UserEntity {
     })
     password: string;
 
+    @Column({
+      name: "role",
+      type: "varchar",
+      length: 255
+    })
+    role: string
+
     @CreateDateColumn({
       name: "created_at",
       type: "timestamp"
