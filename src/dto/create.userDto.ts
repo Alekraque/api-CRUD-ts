@@ -22,6 +22,11 @@ export class CreateUserDTO {
   @Length(1, 255)
   @IsString()
   password: string
+
+  @IsNotEmpty()
+  @Length(4, 255)
+  @IsString()
+  role: string
 }
 
 
