@@ -6,6 +6,7 @@ const clientRoutes = Router()
 
 clientRoutes.get("/", clientController.getAll)
 clientRoutes.get('/:id', clientController.showOneCLient)
+clientRoutes.post('/list', clientController.getAllByUserId)
 clientRoutes.put('/:id', clientController.updateClient)
 clientRoutes.delete('/:id', clientController.deleteClient)
 clientRoutes.post('/', clientController.createCLient)
