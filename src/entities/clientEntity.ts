@@ -1,8 +1,8 @@
 import { Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
-  ManyToOne,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn } from "typeorm";
 import { UserEntity } from "./userEntity";
 
@@ -26,10 +26,6 @@ export class ClientEntity {
     })
     email: string
 
-
-    @ManyToOne(type => UserEntity, clients => ClientEntity)
-    usersID: UserEntity
-
     @Column({
       name: 'phone',
       type: 'varchar',
@@ -38,8 +34,20 @@ export class ClientEntity {
     phone: string;
 
     @CreateDateColumn({
-        name: "created_at",
-        type: "timestamp"
+      name: "created_at",
+      type: "timestamp"
     })
     createAt: Date;
-}
+
+    @Column({
+      name: 'user_id',
+      type: 'uuid',
+      nullable: false
+    })
+    user_id: string
+
+
+    @OneToOne(() => UserEntity, (user) => user.client)
+    @JoinColumn({ name: 'user_id', referencedColumnName: 'id'})
+    user: UserEntity
+  }
