@@ -6,17 +6,23 @@ import { DeleteResult, Repository } from "typeorm"
 
 export default class ClientRepository {
 
-    private repository: Repository<ClientEntity>
+  private repository: Repository<ClientEntity>
 
-    constructor() {
-        this.repository = AppDataSource.getRepository(ClientEntity)
-    }
+  constructor() {
+    this.repository = AppDataSource.getRepository(ClientEntity)
+  }
 
-    async getAllClients():Promise<ClientEntity[]>{
-      return await this.repository.find()
-    }
+  async getAllClients():Promise<ClientEntity[]>{
+    return await this.repository.find()
+  }
 
-    async getOneCLient(id:string):Promise<ClientEntity | null>{
+  async getAllClientsByUserId(user_id: string):Promise<ClientEntity[]>{
+    return await this.repository.find({
+      where: {user_id}
+    })
+  }
+
+  async getOneCLient(id:string):Promise<ClientEntity | null>{
       return await this.repository.findOneBy({ id })
     }
 
@@ -26,6 +32,7 @@ export default class ClientRepository {
       newClient.name = client.name
       newClient.email = client.email
       newClient.phone = client.phone
+      newClient.user_id = client.user_id
 
       return await this.repository.save(newClient)
     }
@@ -53,7 +60,6 @@ export default class ClientRepository {
     async selectDeleteClient(ids:any):Promise<DeleteResult[]> {
       return await ids.map((ids:any) => this.repository.delete(ids))
     }
-
 
 
 }
