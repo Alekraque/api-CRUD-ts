@@ -6,7 +6,7 @@
     "dev": "tsx --watch --env-file=.env src/server.ts",
     "migration:show": "npm run typeorm -- migration:show -- -d ./src/database/connection.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
-    "migration:create": "npx typeorm migration:create ./src/config/migrations/",
+    "migration:create": "npx typeorm migration:create ./src/database/migrations/",
     "migration:run": "npm run typeorm -- migration:run -- -d ./src/database/connection.ts",
     "migration:revert": "npm run typeorm -- migration:revert -- -d ./src/database/connection.ts"
   },
