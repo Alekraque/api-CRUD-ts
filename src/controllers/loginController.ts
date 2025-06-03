@@ -1,5 +1,6 @@
 import LoginRepository from "@/repositories/loginRepository";
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
+import { Jwt, sign } from "jsonwebtoken";
 
 class loginController {
 
@@ -16,11 +17,16 @@ class loginController {
       const user = await this.loginRepository.checkUser(email, password)
 
       // inserir json web token aqui dentro
+      const tokenJwt = sign(
+        { email:user.email, id: user.id }, //payload
+        process.env.JWT_SECRET_TOKEN as string,
+        { expiresIn: '1h' })
 
     return res.status(200).json({
       message: "Successful login",
       data: {
         email: user.email,
+        token: tokenJwt
       }
     });
     } catch (error) {
