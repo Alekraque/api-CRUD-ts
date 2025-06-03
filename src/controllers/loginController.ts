@@ -16,7 +16,6 @@ class loginController {
     try {
       const user = await this.loginRepository.checkUser(email, password)
 
-      // inserir json web token aqui dentro
       const tokenJwt = sign(
         { email:user.email, id: user.id }, //payload
         process.env.JWT_SECRET_TOKEN as string,
@@ -25,7 +24,7 @@ class loginController {
     return res.status(200).json({
       message: "Successful login",
       data: {
-        email: user.email,
+        id: user.id,
         token: tokenJwt
       }
     });
