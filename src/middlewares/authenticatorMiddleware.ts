@@ -3,7 +3,8 @@ import { Request, Response, NextFunction } from 'express';
 
 interface tokenPayload {
   id: string,
-  email: string
+  email: string,
+  role: string
 }
 
 
@@ -27,15 +28,17 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
 
   req.user = {
     id: payload.id,
-    email: payload.email
+    email: payload.email,
+    role: payload.role
   }
 
 
     if (typeof decoded === 'object' && 'id' in decoded) {
       req.user = {
         id: (decoded as any).id,
-      };
-      next();
+        role: (decoded as any).role
+      }
+      next()
     } else {
       return res.sendStatus(403).json({
         errorMessage: "token format is invalid"

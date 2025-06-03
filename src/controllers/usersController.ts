@@ -50,7 +50,7 @@ class usersController {
 
     create = async(req:Request, res:Response, next:NextFunction):Promise<Response> => {
 
-      const {name, cpf, email, password, confirmPassword } = req.body
+      const {name, cpf, email, role, password, confirmPassword } = req.body
 
       if(password !== confirmPassword) {
         return res.status(400).json({
@@ -64,6 +64,7 @@ class usersController {
       newUser.email = email
       newUser.cpf = cpf
       newUser.password = password
+      newUser.role = role
 
       const errors = await validate(newUser)
       if (errors.length > 0) {
