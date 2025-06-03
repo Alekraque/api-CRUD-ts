@@ -5,3 +5,5 @@ import { Router } from "express";
 const loginRoutes = Router()
 
 loginRoutes.post('/', loginController.login)
+
+export default loginRoutes
