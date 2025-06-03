@@ -36,7 +36,9 @@ export default class UserRepository {
       newUser.cpf = user.cpf
       newUser.password = result
 
+      console.log(newUser)
       return await this.repository.save(newUser)
+
     }
 
     async updateUser(user:UpdateUserDTO):Promise<UserEntity | object> {
