@@ -5,6 +5,13 @@ import AppDataSource from "@/database/connection";
 import { CreateUserDTO } from "@/dto/create.userDto";
 import { UpdateUserDTO } from "@/dto/update.userDto";
 import { genSalt, hash, compare } from "bcrypt-ts";
+import { AuthError } from "@/utils/authError";
+
+interface ResponseError {
+  status: number
+  errorMessage?: string
+  message?: string
+}
 
 export default class UserRepository {
 
@@ -25,8 +32,30 @@ export default class UserRepository {
     async getOneUserByEmail(email: string): Promise<UserEntity | null> {
       return await this.repository.findOneBy({ email })
     }
-    async createUser(user:CreateUserDTO):Promise<UserEntity | null>{
 
+    async createUser(user:CreateUserDTO):Promise<ResponseError>{
+
+      const existingUserByCpf = await this.repository.findOne({
+        where: { cpf: user.cpf }
+      })
+
+      if (existingUserByCpf) {
+        return {
+          status: 401,
+          errorMessage: "CPF already registered"
+        }
+      }
+
+      const existingUserByEmail = await this.repository.findOne({
+        where: { email: user.email }
+      })
+
+      if (existingUserByEmail) {
+        return {
+          status: 401,
+          errorMessage: "E-mail already registered"
+        }
+      }
       const salt = await genSalt(10)
       const result = await hash(user.password, salt)
 
@@ -36,8 +65,20 @@ export default class UserRepository {
       newUser.cpf = user.cpf
       newUser.password = result
 
-      console.log(newUser)
-      return await this.repository.save(newUser)
+      try {
+        await this.repository.save(newUser)
+        return {
+          status: 201,
+          message: "User sucessful created"
+        }
+
+      } catch (error) {
+        return {
+          status: 400,
+          errorMessage: "Error to create User"
+        }
+
+      }
 
     }
 
