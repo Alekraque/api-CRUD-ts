@@ -3,7 +3,7 @@ import { CreateUserDTO } from '@/dto/create.userDto'
 import { UpdateUserDTO } from '@/dto/update.userDto'
 import UserRepository from '@/repositories/userRepository'
 import { validate } from 'class-validator'
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { DeleteResult } from 'typeorm'
 
 
@@ -48,7 +48,7 @@ class usersController {
       })
     }
 
-    create = async(req:Request, res:Response):Promise<Response> => {
+    create = async(req:Request, res:Response, next:NextFunction):Promise<Response> => {
 
       const {name, cpf, email, password, confirmPassword } = req.body
 
@@ -57,6 +57,7 @@ class usersController {
           errorMessage: "the password does not match the confirmed password"
         })
       }
+
 
       const newUser = new CreateUserDTO()
       newUser.name = name
@@ -71,12 +72,14 @@ class usersController {
         })
       }
 
+
       try {
-        const UserDataBase = await this.userRepository.createUser(newUser)
-        return res.status(200).json({
-          data: UserDataBase
+        const userDataBase = await this.userRepository.createUser(newUser)
+        return res.status(userDataBase.status).json({
+          data: userDataBase
         })
       } catch (error) {
+        next(error)
         return res.status(500).json({
           error: "Internal server error"
         })
