@@ -15,6 +15,12 @@ export class CreateTableClients1748873839186 implements MigrationInterface {
             generationStrategy: 'uuid',
             default: 'uuid_generate_v4()'
           },
+          {
+            name:"name",
+            type: 'varchar',
+            length: '255',
+            isNullable: false
+          },
 
           {
             name: "email",
@@ -54,10 +60,9 @@ export class CreateTableClients1748873839186 implements MigrationInterface {
         foreignKeys: [
           {
             columnNames: ['user_id'],
-            referencedTableName: 'user',
+            referencedTableName: 'users',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE'
-
           }
         ]
     }))
