@@ -1,12 +1,13 @@
 import { Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
   PrimaryGeneratedColumn } from "typeorm";
 import { ClientEntity } from "./clientEntity";
 
 
-@Entity('user')
+@Entity('users')
 export class UserEntity {
 
     @PrimaryGeneratedColumn('uuid')
@@ -26,9 +27,6 @@ export class UserEntity {
     })
     email: string
 
-    @OneToMany(type => ClientEntity, users => UserEntity)
-    clientsID: ClientEntity[]
-
     @Column({
       name: 'cpf',
       type: 'varchar',
@@ -44,8 +42,14 @@ export class UserEntity {
     password: string;
 
     @CreateDateColumn({
-        name: "created_at",
-        type: "timestamp"
+      name: "created_at",
+      type: "timestamp"
     })
     createAt: Date;
-}
+
+    @OneToMany(() => ClientEntity, (user) => user.user)
+    @JoinColumn({ name: 'id', referencedColumnName: 'user_id'})
+    client: ClientEntity[]
+  }
+
+
