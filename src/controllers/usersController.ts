@@ -15,10 +15,8 @@ class usersController {
       this.userRepository = new UserRepository()
     }
 
-      //arrumar nome da função - feito
     getAll = async(req: Request, res: Response):Promise<Response> => {
       const allUsers = await this.userRepository.getAllUsers()
-      //validacao de encontrou usuarios
        if(!allUsers || allUsers.length === 0) {
         return res.status(404).json({
           error: "you don't have users's in your sistem"
@@ -89,7 +87,7 @@ class usersController {
 
     update = async(req:Request, res:Response):Promise<Response> => {
       const { id } = req.params
-      const {name, cpf, email, password, confirmPassword, newPassword} = req.body
+      const {name, cpf, email, role, password, confirmPassword, newPassword} = req.body
 
 
       if(newPassword !== confirmPassword) {
@@ -106,6 +104,7 @@ class usersController {
       updateUserDTO.password = password
       updateUserDTO.newPassword = newPassword
       updateUserDTO.id = id
+      updateUserDTO.role = role
 
 
 
