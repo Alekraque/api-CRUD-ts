@@ -15,7 +15,6 @@ const AppDataSource = new DataSource({
     logging: false,
     entities: [
       __dirname + '/../entities/*entity.{ts,js}'
-      // arrumar caminho correto - feito
     ],
     migrations: [__dirname + '/../database/migrations/*.{ts,js}']
 })
