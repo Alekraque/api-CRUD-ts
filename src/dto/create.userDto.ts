@@ -1,5 +1,5 @@
 import { IsCPF } from "@/utils/cpfValidator"
-import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator"
+import { IsEmail, IsNotEmpty, IsOptional, IsString, Length } from "class-validator"
 
 export class CreateUserDTO {
 
@@ -23,7 +23,7 @@ export class CreateUserDTO {
   @IsString()
   password: string
 
-  @IsNotEmpty()
+  @IsOptional()
   @Length(4, 255)
   @IsString()
   role: string
