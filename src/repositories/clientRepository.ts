@@ -14,12 +14,25 @@ export default class ClientRepository {
 
   async getAllClients():Promise<ClientEntity[]>{
     return await this.repository.find()
+
   }
 
   async getAllClientsByUserId(user_id: string):Promise<ClientEntity[]>{
+
+    console.log("sdfm,bngljdksfhbg", user_id)
+    return
     return await this.repository.find({
       where: {user_id}
     })
+
+
+    // {
+    //   total: 'total de registro de clientes de um usuario',
+    //   page: 'numero da pagina',
+    //   data: {
+    //     "conteudo total de clientes"
+    //   }
+    // }
   }
 
   async getOneCLient(id:string):Promise<ClientEntity | null>{
