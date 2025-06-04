@@ -64,6 +64,7 @@ export default class UserRepository {
       newUser.email = user.email
       newUser.cpf = user.cpf
       newUser.password = result
+      newUser.role = user.role
 
       try {
         await this.repository.save(newUser)
@@ -110,6 +111,7 @@ export default class UserRepository {
       updateUser.email = user.email
       updateUser.cpf = user.cpf
       updateUser.password = result
+      updateUser.role = user.role
 
       return await this.repository.save(updateUser)
     }
