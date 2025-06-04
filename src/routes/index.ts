@@ -16,7 +16,7 @@ router.use((err: any, req: Request, res: Response, next: NextFunction) => {
     return res.status(err.statusCode).json({ error: err.message })
   }
 
-  console.error("Erro não tratado:", err);
+  console.error("Erro não tratado:", err)
   return res.status(500).json({ error: "Erro interno no servidor" })
 })
 
