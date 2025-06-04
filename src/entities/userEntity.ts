@@ -44,7 +44,8 @@ export class UserEntity {
     @Column({
       name: "role",
       type: "varchar",
-      length: 255
+      length: 255,
+      default: "user"
     })
     role: string
 
