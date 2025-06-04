@@ -25,8 +25,14 @@ class clientController {
       })
     }
 
-    getAllByUserId = async(req:Request, res:Response):Promise<Response> => {
-      const { user_id } = req.body
+    getAllClientsByUserId = async(req:Request, res:Response):Promise<Response> => {
+      const user_id = req.user.id
+      if (!user_id) {
+        return res.status(401).json({
+        error: "Unauthorized: User ID not found in token"
+      })
+    }
+
 
       const clientsByUser = await this.repository.getAllClientsByUserId(user_id)
       if (!clientsByUser || clientsByUser.length === 0) {
@@ -40,7 +46,7 @@ class clientController {
     }
 
     showOneCLient = async(req:Request, res:Response):Promise<Response> => {
-    const { id } = req.params
+    const { id } = req.body
 
      //validação se id foi preenchido - feito
     if (!id || id.trim() === "") {
@@ -61,8 +67,8 @@ class clientController {
     }
 
     createCLient = async(req:Request, res:Response):Promise<Response> => {
-      const { name, email, phone, user_id } = req.body
-
+      const { name, email, phone } = req.body
+      const user_id = req.user.id
 
       const newClient = new createClientDTO()
 
