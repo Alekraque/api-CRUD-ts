@@ -21,9 +21,26 @@ export default class UserRepository {
         this.repository = AppDataSource.getRepository(UserEntity)
     }
 
-    async getAllUsers(): Promise<UserEntity[]>{
-      return await this.repository.find()
-    }
+    async getAllUsers(page: number = 1, limitPage: number = 10 ):Promise<object>{
+    const offset = ( page - 1 ) * limitPage
+    const result = await this.repository.find({
+      select: {
+        id: true,
+        name: true,
+        email:true,
+        cpf: true,
+        role: true
+      },
+      skip: offset,
+      take: limitPage
+    })
+
+    const count = await this.repository.count()
+
+    const totalPage = Math.ceil( count / limitPage)
+
+    return { totalPage, page, limitPage, result }
+  }
 
     async getOneUserById(id: string): Promise<UserEntity | null> {
       return await this.repository.findOneBy({ id })

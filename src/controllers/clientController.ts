@@ -13,29 +13,27 @@ class clientController {
     }
 
     getAll = async(req: Request, res: Response):Promise<Response> => {
-      const allClients = await this.repository.getAllClients()
+      const { page, name } = req.query
+      console.log(page)
+      const allClients = await this.repository.getAllClients(String(name), Number(page))
        //validação se realmente encontrou algo - feito
-       if(!allClients || allClients.length === 0) {
+       if(!allClients) {
         return res.status(404).json({
           error: "you don't have Client's in your sistem"
         })
        }
+
       return res.status(200).json({
         data: allClients
       })
     }
 
     getAllClientsByUserId = async(req:Request, res:Response):Promise<Response> => {
+      const {name, page} = req.query
       const user_id = req.user.id
-      if (!user_id) {
-        return res.status(401).json({
-        error: "Unauthorized: User ID not found in token"
-      })
-    }
 
-
-      const clientsByUser = await this.repository.getAllClientsByUserId(user_id)
-      if (!clientsByUser || clientsByUser.length === 0) {
+      const clientsByUser = await this.repository.getAllClientsByUserId(String(name), Number(page), String(user_id) )
+      if (!clientsByUser) {
         return res.status(404).json({
           error: "you don't have Client's in your sistem"
         })
@@ -69,6 +67,12 @@ class clientController {
     createCLient = async(req:Request, res:Response):Promise<Response> => {
       const { name, email, phone } = req.body
       const user_id = req.user.id
+      const verifyEmail = await this.repository.verifyEmail(email)
+      if (verifyEmail) {
+        return res.status(403).json({
+          errorMessage: "You can't create a user with the same email"
+        })
+      }
 
       const newClient = new createClientDTO()
 
@@ -76,6 +80,7 @@ class clientController {
       newClient.email = email
       newClient.phone = phone
       newClient.user_id = user_id
+
 
       const clientErrors = await validate(newClient)
 
@@ -86,8 +91,9 @@ class clientController {
       }
 
       try {
-        console.log('chegou aqui')
+        console.log('chegou aqui') // chega
         const createdClient = await this.repository.createClient(newClient)
+        console.log('chegou aqui') // nao chega
         return res.status(201).json({
           data: createdClient
         })

@@ -16,8 +16,9 @@ class usersController {
     }
 
     getAll = async(req: Request, res: Response):Promise<Response> => {
-      const allUsers = await this.userRepository.getAllUsers()
-       if(!allUsers || allUsers.length === 0) {
+      const { page } = req.query
+      const allUsers = await this.userRepository.getAllUsers(Number(page))
+       if(!allUsers) {
         return res.status(404).json({
           error: "you don't have users's in your sistem"
         })
