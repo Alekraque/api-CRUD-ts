@@ -19,8 +19,6 @@ export default class ClientRepository {
 
   async getAllClientsByUserId(user_id: string):Promise<ClientEntity[]>{
 
-    console.log("sdfm,bngljdksfhbg", user_id)
-    return
     return await this.repository.find({
       where: {user_id}
     })

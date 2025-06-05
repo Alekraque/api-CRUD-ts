@@ -14,7 +14,6 @@ export const authToken = (req: Request, res: Response, next: NextFunction) => {
   }
 
   const token = authHeader.split(' ')[1]
-  console.log('Token recebido:', token)
 
   try {
     // Tenta verificar com user
@@ -28,7 +27,7 @@ export const authToken = (req: Request, res: Response, next: NextFunction) => {
       // Se falhar aquele trycatch, eu tento dnv com o admin
       let verifyToken = jwt.verify(token, process.env.JWT_TOKEN_ADMIN) as tokenPayload //Tenta verificar o token usando o secret do user ADMIN
       req.user = { id: verifyToken.id, role: verifyToken.role } //salva os dados do admin verificado no req.user
-      console.log("Usuário autenticado:", req.user)
+      console.log("Usuário autenticado como admin:", req.user)
       return next() // se for valido, ele vai pro proximo, segue o jogo
     } catch (error2) { // se nenhuma das validacoes der certo, ou seja,
                        // se nenhum dos tokens forem validos, eles nao sao nem admin e nem user

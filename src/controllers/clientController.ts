@@ -86,6 +86,7 @@ class clientController {
       }
 
       try {
+        console.log('chegou aqui')
         const createdClient = await this.repository.createClient(newClient)
         return res.status(201).json({
           data: createdClient

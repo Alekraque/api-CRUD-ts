@@ -10,19 +10,12 @@ class loginController {
     this.loginRepository = new LoginRepository()
   }
 
-  test = async(req:Request, res:Response) => {
-    console.log(req.user.id)
-    return
-  }
-
   login = async(req:Request, res:Response) => {
     const {email, password} = req.body
 
     try {
       const user = await this.loginRepository.checkUser(email, password)
 
-      // console.log('esse user eh user')
-      console.log(user.role)
       const tokenJwt = sign(
         {
           id: user.id,
@@ -32,7 +25,6 @@ class loginController {
         ? process.env.JWT_TOKEN_ADMIN as string
         : process.env.JWT_SECRET_TOKEN as string,
         { expiresIn: '6h' })
-        console.log('tokenJwt', tokenJwt)
 
       return res.status(200).json({
         message: "Successful login",
