@@ -6,13 +6,13 @@ import { checkRole } from "@/middlewares/checkRole";
 
 const clientRoutes = Router()
 
-clientRoutes.get("/", clientController.getAll)
-clientRoutes.get('/list', authToken,checkRole('user'), clientController.getAllClientsByUserId)
-clientRoutes.post('/list-one', clientController.showOneCLient)
-clientRoutes.put('/:id', clientController.updateClient)
-clientRoutes.delete('/:id', clientController.deleteClient)
-clientRoutes.post('/', authToken, checkRole('user'), clientController.createCLient)
-clientRoutes.delete('/', clientController.deleteMoreCLient)
+clientRoutes.get("/", authToken, checkRole('admin'), clientController.getAll)
+clientRoutes.get('/list', authToken, clientController.getAllClientsByUserId)
+clientRoutes.post('/list-one', authToken, clientController.showOneCLient)
+clientRoutes.put('/:id', authToken, clientController.updateClient)
+clientRoutes.delete('/:id', authToken, clientController.deleteClient)
+clientRoutes.post('/', authToken, clientController.createCLient)
+clientRoutes.delete('/', authToken, clientController.deleteMoreCLient)
 
 export default clientRoutes
 
