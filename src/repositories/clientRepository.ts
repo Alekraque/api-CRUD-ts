@@ -12,7 +12,7 @@ export default class ClientRepository {
     this.repository = AppDataSource.getRepository(ClientEntity)
   }
 
-  async getAllClients(name:string, page: number = 1, limitPage: number = 10):Promise<object>{
+  async getAllClients(name:string, page: number = 1, limitPage: number = 3):Promise<object>{
     const offset = ( page - 1 ) * limitPage
     const result = await this.repository.find({
       where: {
@@ -28,7 +28,11 @@ export default class ClientRepository {
       take: limitPage
     })
 
-    const count = await this.repository.count()
+    const count = await this.repository.count({
+      where: {
+        name: ILike(`%${name}%`)
+      }
+    })
 
     const totalPage = Math.ceil( count / limitPage)
 
