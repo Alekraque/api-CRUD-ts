@@ -14,7 +14,6 @@ class clientController {
 
     getAll = async(req: Request, res: Response):Promise<Response> => {
       const { page, name } = req.query
-      console.log(page)
       const allClients = await this.repository.getAllClients(String(name), Number(page))
        //validação se realmente encontrou algo - feito
        if(!allClients) {
