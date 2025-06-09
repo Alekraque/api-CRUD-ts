@@ -6,7 +6,7 @@ import { checkRole } from "@/middlewares/checkRole";
 
 const clientRoutes = Router()
 
-clientRoutes.get("/", authToken, checkRole('admin'), clientController.getAll)
+clientRoutes.get("/", clientController.getAll)
 clientRoutes.get('/list', authToken, clientController.getAllClientsByUserId)
 clientRoutes.post('/list-one', authToken, clientController.showOneCLient)
 clientRoutes.put('/:id', authToken, clientController.updateClient)
