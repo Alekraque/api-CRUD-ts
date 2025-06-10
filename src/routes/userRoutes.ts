@@ -7,7 +7,7 @@ import { checkRole } from "@/middlewares/checkRole";
 
 
 const userRoutes = Router()
-userRoutes.get("/", authToken, checkRole('admin'), UsersController.getAll)
+userRoutes.get("/", UsersController.getAll)
 userRoutes.get('/:id', authToken, UsersController.showOneUser)
 userRoutes.put('/:id', authToken, UsersController.update)
 userRoutes.delete('/:id', authToken, checkRole('admin'), UsersController.delete)

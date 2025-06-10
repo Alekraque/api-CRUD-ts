@@ -17,6 +17,7 @@ class usersController {
 
     getAll = async(req: Request, res: Response):Promise<Response> => {
       const { page } = req.query
+      console.log(page)
       const allUsers = await this.userRepository.getAllUsers(Number(page))
        if(!allUsers) {
         return res.status(404).json({
